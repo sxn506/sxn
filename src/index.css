@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────
+ * Design tokens
+ * Mirrors the token names used by ApprovalCard.tsx
+ * (surface / canvas / ink / hover / accent / radii / shadows).
+ * Change these here to re-theme the whole card.
+ * ───────────────────────────────────────────────────────── */
+
+@theme {
+  --color-canvas: #e8e9ec;
+  --color-surface: #ffffff;
+  --color-ink: #1b1d20;
+  --color-ink-2: #5b6066;
+  --color-ink-3: #8e9399;
+  --color-hover: #f1f2f4;
+  --color-line-strong: #d7d9dd;
+  --color-accent: #2f6fed;
+  --color-accent-soft: #7cb8ef;
+  --color-green: #17804b;
+  --color-green-tint: #e6f4ec;
+
+  --radius-card: 14px;
+  --radius-control: 8px;
+
+  --shadow-card:
+    0 1px 2px rgba(16, 24, 40, 0.05),
+    0 10px 28px rgba(16, 24, 40, 0.09);
+  --shadow-btn: 0 1px 2px rgba(16, 24, 40, 0.08);
+
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* Plain CSS aliases.
+ * The card is written against `var(--line-strong)` (a web-style token name),
+ * while Tailwind v4 exposes the same value as `--color-line-strong`.
+ * Keep both in sync so the component's inline styles resolve. */
+:root {
+  --line-strong: var(--color-line-strong);
+  --line: #eceef1;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* primitive building blocks referenced by the card's class names */
+@layer components {
+  .primitive-card-pad {
+    padding: 18px 16px 4px 16px;
+  }
+
+  .primitive-card-footer {
+    padding: 10px 10px 12px 14px;
+  }
+
+  .primitive-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primitive-card-pad,
+  .primitive-card-footer {
+    scroll-behavior: auto;
+  }
+}
