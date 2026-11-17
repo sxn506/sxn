@@ -1,4 +1,4 @@
-import ApprovalCard from "@/components/ApprovalCard";
+import ApprovalCard from "@/components/primitives/ApprovalCard";
 
 export default function App() {
   return (

@@ -1,45 +1,48 @@
-import type { ReactNode } from "react";
+"use client";
 
-type ButtonVariant = "accent" | "ghost";
-type ButtonSize = "sm" | "md";
+import { type ButtonHTMLAttributes } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-const VARIANTS: Record<ButtonVariant, string> = {
-  accent: "bg-accent text-white hover:brightness-95 disabled:bg-accent-soft disabled:hover:brightness-100",
-  ghost: "bg-hover text-ink hover:bg-line-strong/70",
-};
+const filledShadow = "shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]";
 
-const SIZES: Record<ButtonSize, string> = {
-  sm: "h-[26px] px-3 text-[12.5px]",
-  md: "h-8 px-3.5 text-[13px]",
-};
+/* Pill-shaped by default — the app's core button style. Explicit symmetric
+ * padding (not a fixed height) so the top/bottom spacing is always equal.
+ * Source: https://www.beautifului.dev/r/button.json */
+export const buttonVariants = cva(
+  `inline-flex items-center justify-center font-medium select-none
+   transition-[transform,background-color,opacity] duration-150 ease-out
+   active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none`,
+  {
+    variants: {
+      variant: {
+        primary: `bg-ink text-canvas hover:opacity-90 dark:bg-ink dark:text-canvas ${filledShadow}`,
+        secondary: "bg-surface text-ink shadow-btn hover:bg-inset aria-expanded:bg-hover",
+        ghost: "bg-hover-2 text-ink hover:bg-line-strong",
+        accent: `bg-accent text-white hover:bg-accent-ink ${filledShadow}`,
+        success: `bg-green text-white hover:brightness-95 ${filledShadow}`,
+        /* transparent until hovered — for dense toolbars/action rows */
+        quiet: "text-ink hover:bg-hover",
+      },
+      size: {
+        /* compact toolbar pill — fixed height, lighter weight */
+        xs: "h-7 rounded-full px-2.5 text-[12px] font-normal leading-none gap-1",
+        /* canonical action pill — 27px tall, roomy sides */
+        sm: "h-[27px] px-3 text-[13px] leading-none rounded-full gap-1.5",
+        md: "px-4 py-[9px] text-sm leading-none rounded-full gap-2",
+      },
+    },
+    defaultVariants: { variant: "secondary", size: "md" },
+  },
+);
+
+export type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>["variant"]>;
 
 export function Button({
-  children,
-  variant = "accent",
-  size = "sm",
-  disabled = false,
-  onClick,
-  type = "button",
-  className = "",
-}: {
-  children: ReactNode;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  disabled?: boolean;
-  onClick?: () => void;
-  type?: "button" | "submit";
-  className?: string;
-}) {
-  return (
-    <button
-      type={type}
-      disabled={disabled}
-      onClick={onClick}
-      className={`inline-flex select-none items-center justify-center rounded-full font-medium leading-none shadow-btn transition-[filter,background-color,color] duration-150 disabled:cursor-default disabled:shadow-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
-    >
-      {children}
-    </button>
-  );
+  variant,
+  size,
+  className,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>) {
+  return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />;
 }
-
-export default Button;
