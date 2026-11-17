@@ -4,6 +4,13 @@ A human-in-the-loop approval card: **one question at a time**. The stack slides 
 
 ![preview](docs/preview.png)
 
+## Live demo
+
+- **Approval Card demo (this repo's Vite app):** run it locally with `npm run dev`
+- **Draggable profile list (standalone HTML):** <https://sxn506.github.io/sxn/>
+
+The static page lives at `docs/index.html` and is published by GitHub Pages, which serves the `main` branch's `/docs` directory. It has no build step — edit the file, push, and the page updates.
+
 ## Source and attribution
 
 This repository is a **runnable packaging of a third-party component**, not an original work:
